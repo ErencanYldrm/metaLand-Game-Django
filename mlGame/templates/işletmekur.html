@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>İşletme Kur</title>
+  </head>
+  <body>
+    <h1>Kullanıcı: {{ kullanıcı }}</h1>
+    <h2>Arsalar:</h2>
+    <ul>
+      {% for arsa in arsalar %}
+      <li>
+        {{ arsa }} {% if arsa.alanTürü == 1 %}
+        <button disabled>Mağaza</button>
+        <button disabled>Market</button>
+        <button disabled>Emlak</button>
+        {% else %}
+        <!-- İşletme yoksa -->
+        <button onclick="mağazaOnClick('{{ arsa.id }}')">Mağaza</button>
+        <button onclick="marketOnClick('{{ arsa.id }}')">Market</button>
+        <button onclick="emlakOnClick('{{ arsa.id }}')">Emlak</button>
+        {% endif %}
+      </li>
+      {% empty %}
+      <li>Uygun arsanız bulunmamaktadır.</li>
+      {% endfor %}
+    </ul>
+    <h3>Ücret: {{ ücret }}</h3>
+    <h3>Mevcut Para: {{para}}</h3>
+
+    <script>
+      function mağazaOnClick(arsaId) {
+        // AJAX kullanarak Django view'una istek gönderme
+        fetch(`/magaza/${arsaId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            location.reload();
+          })
+          .catch((error) => {});
+      }
+
+      function marketOnClick(arsaId) {
+        // AJAX kullanarak Django view'una istek gönderme
+        fetch(`/market/${arsaId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            location.reload();
+          })
+          .catch((error) => {});
+      }
+
+      function emlakOnClick(arsaId) {
+        // AJAX kullanarak Django view'una istek gönderme
+        fetch(`/emlak/${arsaId}/`)
+          .then((response) => response.json())
+          .then((data) => {
+            location.reload();
+          })
+          .catch((error) => {});
+      }
+    </script>
+  </body>
+</html>

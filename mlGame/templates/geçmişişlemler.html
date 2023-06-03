@@ -1,0 +1,46 @@
+<h1>{{kullanıcı}}</h1>
+
+<h2>Alanlar:</h2>
+<ul>
+  {% for alan in alanlar %}
+  <li>{{ alan }}</li>
+  {% empty %}
+  <li>Alan bulunamadı.</li>
+  {% endfor %}
+</ul>
+<h2>İşletmeler:</h2>
+<ul>
+  {% for işletme in işletmeler %}
+  <li>{{ işletme }}</li>
+  <h3>{{ işletme.işletme }}</h3>
+  {% empty %}
+  <li>İşletme bulunamadı.</li>
+  {% endfor %}
+</ul>
+
+<h2>Satışlar:</h2>
+<ul>
+  {% for satış in satışlar %}
+  <li>{{ satış }}</li>
+  {% empty %}
+  <li>Satış bulunamadı.</li>
+  {% endfor %}
+</ul>
+
+<h2>Alışlar:</h2>
+<ul>
+  {% for alış in alışlar %}
+  <li>{{ alış }}</li>
+  {% empty %}
+  <li>Alış bulunamadı.</li>
+  {% endfor %}
+</ul>
+
+<h2>Çalışmalar:</h2>
+<ul>
+  {% for çalışma in çalışmalar %}
+  <li>{{ çalışma }}</li>
+  {% empty %}
+  <li>Çalışma bulunamadı.</li>
+  {% endfor %}
+</ul>

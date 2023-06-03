@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Panel</title>
+  </head>
+  <body>
+    <h1>Panel</h1>
+
+    <h2>Kullanıcı: {{ kullanıcı.ad }}</h2>
+    <h3>{{ mesaj }}</h3>
+
+    <h3>İşletmeler</h3>
+    <ul>
+      {% for alan in alanlar %}
+      <li>
+        <h3>İşletme Türü: {{ alan.işletme.işletmeTürü }}</h3>
+        <h3>Ürün Ücreti: {{ alan.işletme.ürünÜcreti }}</h3>
+        <form action="/güncelle" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="alanX" value="{{ alan.alanNoX }}" />
+          <input type="hidden" name="alanY" value="{{ alan.alanNoY }}" />
+          <input type="number" name="ürünÜcreti" />
+          <button type="submit">Güncelle</button>
+        </form>
+        <h3>Günlük Çalışma Ücreti : {{alan.işletme.çalışmaÜcreti}}</h3>
+        <form action="/çalışmaücreti" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="x" value="{{ alan.alanNoX }}" />
+          <input type="hidden" name="y" value="{{ alan.alanNoY }}" />
+          <input type="number" name="çalışmaÜcreti" />
+          <button type="submit">Güncelle</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

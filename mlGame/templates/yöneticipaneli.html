@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Yönetici Paneli</title>
+    <style>
+      li {
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Yönetici Paneli</h1>
+
+    <h2>Oyuncular</h2>
+    <ul>
+      {% for oyuncu in oyuncular %}
+      <h2>{{ oyuncu.kullanıcıAdı }}</h2>
+      <li>Yemek miktarı : {{oyuncu.yemekmiktarı}}</li>
+      <li>Eşya miktarı : {{oyuncu.eşyamiktarı}}</li>
+      <li>Para miktarı : {{oyuncu.paramiktarı}}</li>
+      {% for alan in işletmeler %} {% if alan.alanSahibi == oyuncu %}
+      <li>{{alan}} {{alan.işletme.işletmeTürü}}</li>
+      {% endif %} {% endfor %} {% empty %}
+      <li>Henüz oyuncu yok</li>
+      {% endfor %}
+    </ul>
+    <h2>Oyun Bilgileri</h2>
+    <h3>{{oyun.oyunBaşlangıçTarihi}}</h3>
+    <form method="POST" action="oyungüncelle">
+      {% csrf_token %}
+
+      <h3>Başlangıç Yemek Miktarı : {{oyun.başlangıçYemekMiktarı}}</h3>
+      <h3>Başlangıç Yemek Miktarı : {{oyun.başlangıçEşyaMiktarı}}</h3>
+      <h3>Başlangıç Yemek Miktarı : {{oyun.başlangıçParaMiktarı}}</h3>
+      <br />
+      <label for="günlükyiyecekgideri">Günlük Yiyecek Gideri:</label>
+      <input
+        type="number"
+        id="günlükyiyecekgideri"
+        name="günlükyiyecekgideri"
+        value="{{ oyun.günlükYiyecekGideri }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+      <label for="günlükeşyagideri">Günlük Eşya Gideri:</label>
+      <input
+        type="number"
+        id="günlükeşyagideri"
+        name="günlükeşyagideri"
+        value="{{ oyun.günlükEşyaGideri }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+      <label for="günlükparagideri">Günlük Para Gideri:</label>
+      <input
+        type="number"
+        id="günlükparagideri"
+        name="günlükparagideri"
+        value="{{ oyun.günlükParaGideri }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+      <label for="çalışmaÜcreti">Çalışma Ücreti:</label>
+      <input
+        type="number"
+        id="çalışmaÜcreti"
+        name="çalışmaÜcreti"
+        value="{{ oyun.çalışmaÜcreti }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+      <label for="isletmeucreti">İşletme Ücreti:</label>
+      <input
+        type="number"
+        id="isletmeucreti"
+        name="isletmeucreti"
+        value="{{ oyun.İşletmeÜcreti }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+
+      <label for="isletmesabitgelirmiktari">İşletme Sabit Gelir Miktarı:</label>
+      <input
+        type="number"
+        id="isletmesabitgelirmiktari"
+        name="isletmesabitgelirmiktari"
+        value="{{ oyun.işletmeSabitGelirMiktarı }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+
+      <label for="isletmesabitgelirorani">İşletme Sabit Gelir Oranı:</label>
+      <input
+        type="number"
+        id="isletmesabitgelirorani"
+        name="isletmesabitgelirorani"
+        value="{{ oyun.işletmeSabitGelirOranı }}"
+      />
+      <button type="submit">Güncelle</button>
+      <br />
+      <br />
+      <br />
+    </form>
+    <h3>ileri sarılan gün : {{ilavegün}}</h3>
+    <form action="ilerisar" method="POST">
+      {% csrf_token %}
+      <input type="number" id="ilavegün" name="ilavegün" />
+      <button type="submit">Güncelle</button>
+    </form>
+    <form action="/Yarat">
+      <button type="submit">Yeni Oyun Yarat</button>
+    </form>
+  </body>
+</html>

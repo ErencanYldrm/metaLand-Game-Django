@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>İşletme Sat</title>
+  </head>
+  <body>
+    <h1>İşletmeni sat</h1>
+
+    <h2>Kullanıcı: {{ kullanıcı.ad }}</h2>
+    <h3>{{ mesaj }}</h3>
+
+    <h3>İşletmeler</h3>
+    <ul>
+      {% for alan in alanlar %}
+      <li>
+        <h3>{{alan}}</h3>
+        <h3>İşletme Türü: {{ alan.işletme.işletmeTürü }}</h3>
+        <form action="/emlakçıyaver" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="x" value="{{ alan.alanNoX }}" />
+          <input type="hidden" name="y" value="{{ alan.alanNoY }}" />
+          <input type="hidden" name="emlakx" value="{{ emlakx }}" />
+          <input type="hidden" name="emlaky" value="{{ emlaky }}" />
+          <input type="number" name="ücret" />
+          <button type="submit">Emlakçıya ver</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mağaza</title>
+  </head>
+  <body>
+    <h1>Yönetici Mağaza</h1>
+
+    <h3>Koordinatlar: X: {{ alan.alanNoX }}, Y: {{ alan.alanNoY }}</h3>
+    <h3>Ürün Ücreti: {{ ücret }}</h3>
+    <h1>{{mesaj}}</h1>
+
+    <form action="/yöneticisatınal" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="x" value="1" />
+      <input type="hidden" name="y" value="0" />
+      <button type="submit">Satın Al</button>
+    </form>
+
+    <h3>Mevcut eşyan: {{kullanıcı.eşyamiktarı}}</h3>
+    <h3>Mevcut Paran : {{para}}</h3>
+    <h3>----------------------------------</h3>
+    <h3>İşletme Günlük Ücreti {{oyun.çalışmaÜcreti}}</h3>
+    <h4>Çalışmak İstediğin Gün Sayısını Gir</h4>
+    <form action="/çalışma" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="x" value="1" />
+      <input type="hidden" name="y" value="0" />
+      <input type="number" name="günsayısı" />
+      <button type="submit">İşe Gir</button>
+    </form>
+  </body>
+</html>

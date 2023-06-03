@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Emlak</title>
+  </head>
+  <body>
+    <h1>Emlak</h1>
+
+    <h2>Emlak Sahibi: {{ alan.alanSahibi }}</h2>
+    <h3>Koordinatlar: X: {{ alan.alanNoX }}, Y: {{ alan.alanNoY }}</h3>
+    <h3>Emlak Komisyon Ücreti: {{ alan.işletme.ürünÜcreti }}</h3>
+    <h1>{{ mesaj }}</h1>
+
+    <h3>Emlak İşletmeleri</h3>
+    <ul>
+      {% for isletme in alan.işletme.emlakİşletmeler.all %}
+      <li>
+        <h3>İşletme Türü: {{ isletme.işletme.işletmeTürü }}</h3>
+        <h3>Ücret : {{ isletme.işletme.işletmeSatışFiyatı }}</h3>
+        <h3>İşletme Sahibi: {{ isletme.alanSahibi }}</h3>
+        <h3>{{isletme}}</h3>
+        <form action="/işletmesatınal" method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="x" value="{{ isletme.alanNoX }}" />
+          <input type="hidden" name="y" value="{{ isletme.alanNoY }}" />
+          <input type="hidden" name="emlakx" value="{{ alan.alanNoX  }}" />
+          <input type="hidden" name="emlaky" value="{{ alan.alanNoY }}" />
+          <button type="submit">Satın Al</button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <form action="/işletmesat" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="x" value="{{ alan.alanNoX }}" />
+      <input type="hidden" name="y" value="{{ alan.alanNoY }}" />
+      <button type="submit">İşletme Sat</button>
+    </form>
+    <h3>----------------------------------</h3>
+
+    <h3>İşletme Günlük Ücreti {{alan.işletme.çalışmaÜcreti}}</h3>
+    <h4>Çalışmak İstediğin Gün Sayısını Gir</h4>
+    <form action="/çalışma" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="x" value="{{ alan.alanNoX }}" />
+      <input type="hidden" name="y" value="{{ alan.alanNoY }}" />
+      <input type="number" name="günsayısı" />
+      <button type="submit">İşe Gir</button>
+    </form>
+  </body>
+</html>

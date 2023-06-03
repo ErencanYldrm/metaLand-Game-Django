@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Kare Yapısı</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .row {
+        display: flex;
+      }
+
+      .square {
+        width: 100px;
+        height: 100px;
+        background-color: #33dc77;
+        border: 1px solid #373737;
+        cursor: pointer;
+      }
+
+      .info {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+      }
+
+      .info-box {
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+      }
+
+      .info-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .info-value {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .info-panel {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        display: none;
+        width: 200px;
+      }
+
+      .info-coordinates {
+        font-size: 16px;
+        font-weight: bold;
+      }
+
+      .username {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .info-alan {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 10px;
+        padding: 5px;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+      }
+
+      .info-label {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+
+      .info-data {
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="username">{{kullanıcı}}</div>
+      <div id="gameBoard"></div>
+      <div class="info">
+        <div class="info-box">
+          <div class="info-title">Yiyecek</div>
+          <div class="info-value" id="food">0</div>
+        </div>
+        <div class="info-box">
+          <div class="info-title">Eşya</div>
+          <div class="info-value" id="item">0</div>
+        </div>
+        
+        <div class="info-box">
+          <div class="info-title">Para</div>
+          <div class="info-value" id="money">0</div>
+        </div>
+      </div>
+      <div class="info-panel" id="infoPanel">
+        <div class="info-coordinates" id="coordinates"></div>
+        <div class="info-label">Alan Sahibi:</div>
+        <div class="info-data" id="alanSahibi"></div>
+        <div class="info-label">Alan Türü:</div>
+        <div class="info-data" id="alanTürü"></div>
+        <div class="info-label">İşletme:</div>
+        <div class="info-data" id="işletme"></div>
+        <div class="info-label">Yönetici İşletme:</div>
+        <div class="info-data" id="yöneticiİşletme"></div>
+
+        <form action="/işlem" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="x" id=X1>
+          <input type="hidden" name="y" id=Y1>
+          <button type="submit" disable>İŞLEM YAP</button>
+      </form>
+      
+      
+    
+      
+    <form action="/yöneticiemlak" method="post">
+      {% csrf_token %}
+      <button type="submit">Yönetici Emlak</button>
+  </form>
+  <form action="/yöneticimarket" method="post">
+    {% csrf_token %}
+    <button type="submit">Yönetici Market</button>
+</form>
+<form action="/yöneticimağaza" method="post">
+  {% csrf_token %}
+  <button type="submit">Yönetici Mağaza</button>
+</form>
+      
+    </div>
+    <form action="geçmişişlemler">
+      <button>İşlemleri gör</button>
+    </form>
+   
+
+    <script>
+      let foodCount = "{{yiyecekMiktarı}}";
+      let itemCount = "{{eşyaMiktarı}}";
+      let moneyCount = "{{paraMiktarı}}";
+
+      function createGameBoard(x, y) {
+        const gameBoard = document.getElementById("gameBoard");
+        gameBoard.innerHTML = "";
+
+        for (let i = 0; i < y; i++) {
+          const row = document.createElement("div");
+          row.classList.add("row");
+
+          for (let j = 0; j < x; j++) {
+            const square = document.createElement("div");
+            square.classList.add("square");
+            square.dataset.x = j;
+            square.dataset.y = i;
+            square.addEventListener("click", showCoordinates);
+            row.appendChild(square);
+          }
+          
+
+          gameBoard.appendChild(row);
+        }
+      }
+
+      function updateInfo() {
+        const foodElement = document.getElementById("food");
+        const itemElement = document.getElementById("item");
+        const moneyElement = document.getElementById("money");
+
+        foodElement.textContent = foodCount;
+        itemElement.textContent = itemCount;
+        moneyElement.textContent = moneyCount;
+      }
+      
+      
+      function showCoordinates(event) {
+        const x = event.target.dataset.x;
+        const y = event.target.dataset.y;
+        X1 = x;
+        Y1 = y;
+        document.getElementById("X1").value = X1;
+        document.getElementById("Y1").value = Y1;
+        const coordinatesElement = document.getElementById("coordinates");
+        coordinatesElement.textContent = `X: ${x}, Y: ${y}`;
+
+        const infoPanel = document.getElementById("infoPanel");
+        infoPanel.style.display = "block";
+
+        // AJAX isteği gönderme
+        const xhr = new XMLHttpRequest();
+        xhr.open("GET", `/api/alanBilgisi?x=${x}&y=${y}`);
+        xhr.onload = function () {
+          if (xhr.status === 200) {
+            const response = JSON.parse(xhr.responseText);
+            const alanNoXElement = document.getElementById("alanNoX");
+            const alanNoYElement = document.getElementById("alanNoY");
+            const alanSahibiElement = document.getElementById("alanSahibi");
+            const alanTürüElement = document.getElementById("alanTürü");
+            const işletmeElement = document.getElementById("işletme");
+            const yöneticiİşletmeElement =
+              document.getElementById("yöneticiİşletme");
+            // const emlakbutton = document.getElementById("emlakbutton");
+            // const mağazabuton = document.getElementById("mağazabuton");
+            // const marketbuton = document.getElementById("marketbuton");
+              
+            
+
+              alanSahibiElement.textContent = response.alan.alanSahibi ? response.alan.alanSahibi.kullanıcıAdı : "Yönetici";
+              
+            alanTürüElement.textContent = response.alan.alanTürü;
+
+            
+            işletmeElement.textContent = response.alan.işletme
+              ? response.alan.işletme.işletmeTürü
+              : "";
+            yöneticiİşletmeElement.textContent = response.alan.yöneticiİşletme
+              ? response.alan.yöneticiİşletme.işletmeTürü
+              : "";
+
+            işletmeElement.style.display = response.alan.işletme
+              ? "block"
+              : "none";
+            yöneticiİşletmeElement.style.display = response.alan.yöneticiİşletme
+              ? "block"
+              : "none";
+            //   if (response.alan.alanTürü == 1) {
+            //     if(response.alan.işletme.işletmeTürü == "Market"){
+            //     console.log("market")
+            //     marketbuton.disabled = false;
+            //   }
+            //     if(response.alan.işletme.işletmeTürü == "Mağaza"){
+            //     console.log("mağaza")
+            //     mağazabuton.disabled = false;
+            // }
+            //   if(response.alan.işletme.işletmeTürü == "Emlak"){
+            //     console.log("emlak")
+            //     emlakbutton.disabled = false;
+            //   }
+
+            // }
+          
+            // else {
+            //   emlakbutton.disabled = true;
+            //   mağazabuton.disabled = true;
+            //   marketbuton.disabled = true;
+            // }
+          } else {
+            console.error("İstek başarısız. Durum kodu: " + xhr.status);
+          }
+        };
+        xhr.send();
+      }
+      function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== "") {
+          const cookies = document.cookie.split(";");
+          for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Cookie adı eşleşirse değerini al
+            if (cookie.substring(0, name.length + 1) === name + "=") {
+              cookieValue = decodeURIComponent(
+                cookie.substring(name.length + 1)
+              );
+              break;
+            }
+          }
+        }
+        return cookieValue;
+      }
+      
+      
+      
+
+      const x = "{{x}}";
+      const y = "{{y}}";
+
+      createGameBoard(x, y);
+
+      updateInfo();
+    </script>
+  </body>
+</html>
