@@ -1,0 +1,35 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.Giriş, name='Giriş'),
+    path("Kayıt", views.Kayıt, name="Kayıt"),
+    path("Yarat", views.Yarat, name="Yarat"),
+    path("Yükle", views.Yükle, name="Yükle"),
+    path("Yükle/<int:pk>", views.Yükle, name="Yükle"),
+    path('api/alanBilgisi', views.alan_bilgisi, name='alan_bilgisi'),
+    path('işegir', views.alanGönder, name='alanGönder'),
+    path("yöneticiemlak", views.yöneticiEmlak, name="yöneticiEmlak"),
+    path("yöneticimarket", views.yöneticiMarket, name="yöneticiMarket"),
+    path("yöneticimağaza", views.yöneticiMağaza, name="yöneticiMağaza"),
+    path("yöneticiemlaksatış", views.yöneticiEmlakSatış, name="yöneticiEmlakSatış"),
+    path("işletmekur", views.işletmeKur, name="işletmeKur"),
+    path('magaza/<int:arsa_id>/', views.mağazaOnClick, name='magaza_onclick'),
+    path('market/<int:arsa_id>/', views.marketOnClick, name='market_onclick'),
+    path('emlak/<int:arsa_id>/', views.emlakOnClick, name='emlak_onclick'),
+    path('işlem', views.işlem, name='işlem'),
+    path("satınal", views.satınAl, name="satınAl"),
+    path("güncelle", views.güncelle, name="güncelle"),
+    path("işletmesat", views.işletmeSat, name="işletmeSat"),
+    path("emlakçıyaver", views.emlakçıyaver, name="emlakçıyaver"),
+    path("işletmesatınal", views.işletmeSatınAl, name="işletmeSatınAl"),
+    path("çalışmaücreti", views.çalışmaücreti, name="çalışmaücreti"),
+    path("çalışma", views.çalışma, name="çalışma"),
+    path("Yükle/geçmişişlemler", views.geçmişişlemler, name="geçmişişlemler"),
+    path("yöneticipaneli",
+         views.yöneticiPaneli, name="yöneticiPaneli"),
+    path("oyungüncelle", views.oyunGüncelle, name="oyunGüncelle"),
+    path("yöneticisatınal", views.yöneticiSatınAl, name="yöneticiSatınAl"),
+    path("ilerisar", views.ilerisar, name="ilerisar"),
+
+]
